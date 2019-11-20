@@ -1,0 +1,47 @@
+FROM openshift/rhel7:latest
+
+MAINTAINER firas.taher@bestbuy.com
+
+ENV PATH="/opt/yantra/yntadmin/java/java/bin:/opt/yantra/eoprt01/smcfs93local/bin:${PATH}" \
+    JAVA_HOME="/usr/lib/jvm/java-11-openjdk-11.0.4.11-1.el7_7.x86_64/" \
+    KEYSTORE_FILE=/opt/yantra/yntadmin/SSL/appclient_oms.jks \
+    KEYSTORE_PASS_PHRASE_FILE=/opt/yantra/yntadmin/SSL/appclient_pass_oms \
+    TRUSTSTORE_FILE=/opt/yantra/yntadmin/SSL/was_truststore_oms.jks \
+    TRUSTSTORE_PASS_PHRASE_FILE=/opt/yantra/yntadmin/SSL/was_truststore_pass_oms \
+    IBM_JAVACOREDIR=/opt/logs/yantra/eoprt01/dump
+
+COPY smcfs93local_qa01.tar SSL.zip agent.sh script.sh /opt/
+
+RUN  yum update -y \
+  && yum install -y \ 
+     yum install java-1.8.0-openjdk \
+     yum install java-1.8.0-openjdk-devel \
+     rsync \ 
+     net-tools \
+     bind-utils \
+     telnet \
+     iputils \ 
+     lsof \
+     curl \
+     unzip \
+  && yum clean all \
+  && mkdir -p \ 
+      /opt/yantra/yntadmin/java/ \
+      /opt/yantra/yntadmin/SSL/ \
+      /opt/logs/yantra/eoprt01/dump/ \
+      /opt/yantra/eoprt01/smcfs93local/tmp/ehcache/ \
+      /usr/lib/jvm/java-1.8.0-openjdk.x86_64/ \
+  && rsync -a /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.222.b10-1.el7_7.x86_64/  /usr/lib/jvm/java-1.8.0-openjdk.x86_64/ \
+  && tar -xvf /opt/smcfs93local_qa01.tar -C /opt/yantra/eoprt01/smcfs93local/ \
+  && rm -rf /opt/yantra/eoprt01/smcfs93local/bin/agent.sh \
+  && cp /opt/agent.sh /opt/yantra/eoprt01/smcfs93local/bin/ \ 
+  && unzip /opt/SSL.zip -d /opt/yantra/yntadmin/SSL/ \
+  && chmod -R 777 /opt/ \
+  && rm -rf /opt/smcfs93local_qa01.tar /opt/SSL.zip /opt/agent.sh 
+
+WORKDIR /opt/
+
+#EXPOSE 59506
+
+
+CMD ["./script.sh"]
