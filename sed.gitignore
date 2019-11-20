@@ -1,7 +1,0 @@
-.gitignore
-*.tar
-*.gz
-&& sed -i -e 's/\r$//' /opt/yantra/eoprt01/smcfs93local/bin/agent.sh \
-
-ENTRYPOINT ["/opt/yantra/eoprt01/smcfs93local/bin/agent.sh"]
-CMD ["CREATEORDER"]
