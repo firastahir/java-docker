@@ -1,4 +1,4 @@
-oc login https://master.dt01-lcp-a.na.bestbuy.com/
+oc login https://master.dt01-lcp-a.na.com/
 oc new-build "C:\Users\A1484959\Downloads" --name=rhel7-test
 oc start-build --from-dir="C:\Users\A1484959\Downloads" rhel7-test --follow
 oc run rhel7-test --image=docker-registry.default.svc:5000/oms-co-dt-bdc-na/rhel7-test
@@ -10,10 +10,3 @@ oc run oms-createorder-nolimit --image=docker-registry.default.svc:5000/oms-co-d
 
 oc new-build . --name=oms-co && oc start-build --from-dir=. oms-co --follow && oc run oms-co --image=docker-registry.default.svc:5000/oms-co-dt-bdc-na/oms-co --limits=cpu=900m,memory=2Gi && oc get po -w
 
-dtl01d20ap102/nEv,qMF5}~-tocGS
-
-Cartus
-afrahlateef
-Yousef2710
-Jan 10 -  70 or above
-210-428-2008
